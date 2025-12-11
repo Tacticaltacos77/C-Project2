@@ -23,6 +23,11 @@ class Deck{
         int deckSize = DECKSIZE;
     public:
         Deck();
+        ~Deck();
+        Deck& operator--(){
+            --currSize;
+            return *this;
+        }
         void emptyDeck();
         void filldeck();
         void shuffleDeck();

@@ -1,23 +1,27 @@
 #include <iostream>
-#include <ctime>
+
 using namespace std;
 
 #include "deck.h"
+
 //Constructor
 Deck::Deck(){
-    currSize = UNIQUECARDS *4; //52 cards in a deck
-    deck = new Card *[currSize];
-    //del 
+    currSize = 0;
+    deck = new Card *[FULLDECKSIZE];
+    
     filldeck();
     shuffleDeck();
 }
-
+Deck::~Deck(){
+    emptyDeck();
+}
 void Deck::emptyDeck(){
     for(int i=0;i<UNIQUECARDS;i++){
         delete deck[i];
         deck[i]=nullptr;
     }
 }
+
 
 void Deck::filldeck(){
     if(deck==nullptr){
@@ -103,4 +107,10 @@ void Deck::shuffleDeck(){
         deck[ran] = deck[i];
         deck[i] = temp;
     }
+}
+Card * Deck::removeCardFromDeck(){
+    if(currSize<=0){
+        resetDeck();
+    }
+    return deck[--currSize];
 }

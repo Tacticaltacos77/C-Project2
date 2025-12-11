@@ -14,9 +14,11 @@ class Round{
     private:
         string playerName, dealerName;
         int playerId, dealerID;
-        double payOut;
+        float payOut;
     public:
-        Round(Player player, Dealer dealer){};
+        Round(Player *player, Dealer *dealer){};
+        string getDealerName(){return dealerName;};
+        double getPayOut(){return payOut;};
 };
 
 #endif /* ROUND_H */

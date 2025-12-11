@@ -18,6 +18,7 @@ class Hand{
         int value, numCards;
         bool busted, dynamicAce;
         Card **cards;
+        Deck *curDeck;
     public:
         
         Hand();
@@ -27,12 +28,17 @@ class Hand{
         void printHand();
         void hit();
         void checkBusted();
+        void checkBusted(Player *player);
         void printFirstCard();
         int getNumCards(){return numCards;};
         int getHandValue(){return value;};
         Card *getCard(int i){return cards[i];}
         void setCard(int i, Card *card){cards[i] = card;};
         void setHandVal(int newVal){value =newVal;};
+        void setCurrDeck(Deck *deck){
+            curDeck = deck;
+        }
+        bool getBusted(){return busted;};
         //Operator Overload
 
         //Adds the card val to the hand val

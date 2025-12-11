@@ -20,34 +20,43 @@ using namespace std;
 //Global Constants
 const int DEALERSTANDVAL = 17; //Value the dealer will hit until it hand value is greater
 
-//NORMAL SEED. 
-const int NORMAL = time(0);//Is the default for normal game purposes
+const int NORMAL = time(0);
 const int TESTSPLIT = 1;
 const int TESTDYNAMICACE= 8;
 //Function Prototypes
 Game::Game(Player *player){
+    
+    srand(NORMAL);
+    //Store player
+    this->player = player;
+    
+    //Create deck
+    deck = new Deck();
+    
     //Can add a load dealer later to have multiple dealers
     dealer = new Dealer(DEALERSTANDVAL, "Logan");
     
     //Aggregation, deck can exist without the same player or dealer. This is for multiplier if added. 
-    player->setCurrDeck(deck);
-    dealer->setCurrDeck(deck);
+    player->hand->setCurrDeck(deck);
+    player->splitHand->setCurrDeck(deck);
+    dealer->hand->setCurrDeck(deck);
 }
 Game :: ~Game(){
 
 }
+
 bool Game::startGame(){
     //Resets game variables
-    if(!player->placeBet()){
-        return false;
-    }
+    player->placeBet();
     //Game logic here
     gameLoop();
+    return true;
 }
 //The game logic once player has placed a bet
 
 void Game :: gameLoop(){
     //Dish out cards+
+    starterCards();
     playerTurn();
     if(!player->hasLost){
         dealerTurn();
@@ -56,25 +65,28 @@ void Game :: gameLoop(){
 }
 void Game :: printPlayerDecisionTree(){
     printHands();
-    
-    cout<<"What will you do? "<<endl;
-    cout<<"Hit/stand";
-    if(!player->hasHit){
-        //Can only double if player has enough money and they havent hit yet
-        if(player->balance >=player->bet*2){
-            cout<<"/double";
-            player->canDouble = true;
-        }//Split
-        if(player->hand->getCard(0)->getValue()==player->hand->getCard(1)->getValue()){
-            cout<<"/split";
-            player->canSplit = true;
-        }else{
-            player->canSplit = false;
-        }
-        player->hasHit = true;
-    }else player->canDouble = false;
-    
+    if(!player->hasLost){
+        cout<<"What will you do? "<<endl;
+        cout<<"Hit/stand";
+        if(!player->hasHit){
+            //Can only double if player has enough money and they havent hit yet
+            if(player->balance >=player->bet*2){
+                cout<<"/double";
+                player->canDouble = true;
+            }//Split
+            if(player->hand->getCard(0)->getValue()==player->hand->getCard(1)->getValue()){
+                cout<<"/split";
+                player->canSplit = true;
+            }else{
+                player->canSplit = false;
+            }
+            player->hasHit = true;
+        }else player->canDouble = false;
+    }else{
+        cout<<"You have busted. "<<endl;
+    }      
 }
+
 void Game :: playerTurn(){
     string userInp;
     do{
@@ -96,6 +108,10 @@ void Game :: playerTurn(){
             }else if(userInp=="hit"||userInp=="Hit"){
                 //Hit logic
                 acceptedInp = true;
+                player->hasHit = true;
+                player->canDouble = false;
+                player->canSplit = false;
+                player->nat21 = false;
                 player->hand->hit();
             }else if(userInp=="Stand"||userInp=="stand"){
                 //Stand logic
@@ -143,7 +159,6 @@ void Game :: printHands(){
         cout<<"Player's hand"<<endl;
         player->hand->printHand();
     }   
-    player->hand->printHand();
     cout <<"=================================="<< endl;
 }
 void Game :: resetAllGameVars(){
@@ -159,5 +174,23 @@ void Game :: payOut(){
         }else multi =1;
     }else{
         multi =-1;
+    }
+    player->payOut = player->bet * multi;
+    player->balance+=player->payOut;
+}
+void Game :: starterCards(){
+    player->hand->hit();
+    player->hand->hit();
+    dealer->hand->hit();
+    dealer->hand->hit();
+}
+//Sets game flags for currhand and has lost
+void Game :: checkPlayerStatus(){
+    if(!player->hasSplit &&  player->hand->getBusted()){
+        player->hasLost =true;  
+    }else{
+        if (player->hand->getBusted() && player->splitHand->getBusted()){
+            player->hasLost ==true;
+        }else if(player->hand->getBusted()&&player->currHand==1)player->currHand =2;
     }
 }

@@ -8,16 +8,12 @@ Player::Player(string name):Person(name){
     //gets player name
     
     bool accInp =true;
-    do{
-        try{
-            cout<<"Enter a starting balance: ";
-            cin>>balance;
-        }catch(Player::InvalidBalance){
-            cout<<"The balance you entered is invalid. Balance must $0 or more. Try again."<<endl;
-            accInp=false;
-        }
-    }while(!accInp);
-    
+
+    cout<<"Enter a starting balance: ";
+    cin>>balance;
+    if(balance <0) throw InvalidBalance();
+        
+
     startBalance = balance;
    
     //Creates a hand with a size that would be big enough(21 is overkill but if you were to increase the decksize this would allow 21 aces)
@@ -100,5 +96,7 @@ void Player :: resetPlayerVars(){
     endRound =false; 
     hasLost = false;
     push = false;
+    payOut = 0;
+    currHand =1;
 }
 

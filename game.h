@@ -29,6 +29,8 @@ class Game{
         void printPlayerDecisionTree();
         void resetAllGameVars();
         void payOut();
+        void starterCards();
+        void checkPlayerStatus();
 };
 
 #endif /* GAME_H */

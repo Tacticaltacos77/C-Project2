@@ -20,6 +20,7 @@ class Dealer : public Person{
         void printInfo();
         void printHiddenHand();
         void resetDealerVars();
+        
 };
 
 #endif /* DEALER_H */

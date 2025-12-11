@@ -23,7 +23,6 @@ class Card{
         string getName(){return name;};
         string getSymbol(){return symbol;};
         int getValue(){return value;};
-        
 };
 
 #endif /* CARD_H */

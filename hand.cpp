@@ -2,13 +2,19 @@
 
 using namespace std;
 
-#include "hand.h"
+
+#include "player.h"
 Hand::Hand(){
+    curDeck = nullptr;
     cards = new Card*[MAXHANDSIZE];
+    //Initialize all card pointers to nullptr
+    for(int i = 0; i < MAXHANDSIZE; i++){
+        cards[i] = nullptr;
+    }
     numCards =0;
     value =0;
     busted = false;
-    dynamicAce = false;//If true that means an ace can be collapsed to equal 1
+    dynamicAce = false;
 }
 void Hand::clearHand(){
     for(int i=0;i<numCards;i++){
@@ -40,9 +46,16 @@ void Hand::addCardVal(int cardVal) {
 }
 void Hand::checkBusted(){
     if(value>21){
+        
         busted = true;
     }
 }
+void Hand::checkBusted(Player *player){
+    if(value>21){
+        busted = true;
+    }   
+}
+
 //Prints the first cards of the Hand and its value as the total
 //For the dealer print 
 void Hand::printFirstCard(){
@@ -57,4 +70,10 @@ void Hand::printHand(){
     }
     cout<<endl;
     cout<<"Total: "<<value<<endl;
+}
+void Hand::hit(){
+    Card *card = curDeck->removeCardFromDeck();
+    cards[numCards] = card;
+    //addCardVal handles the increment
+    addCardVal(card->getValue());
 }

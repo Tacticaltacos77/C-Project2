@@ -16,10 +16,11 @@ const int NAMEBUFFER = 20;
 
 class Player : public Person{
     private:
-        float balance, startBalance;
+        float balance, startBalance, payOut;
         int bet, currHand;
         bool hasHit, canSplit, canDouble, hasSplit, hasDouble, nat21, hasLost, endRound, push;
         Hand  *splitHand;
+        
     public:
         friend class Game;
         Player(string name);
@@ -32,6 +33,10 @@ class Player : public Person{
         void hitDouble();
         void stand();
         void resetPlayerVars();
+        float getPayOut(){return payOut;};
+        bool hasSplt(){return hasSplit;};
+        void setLost(bool lost){hasLost = lost;};
+        Hand *getHand(int i){if(i==1)return hand;else return splitHand;};
 };
 
 #endif /* PLAYER_H */

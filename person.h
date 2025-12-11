@@ -7,7 +7,7 @@ class Person{
     protected:
         string name, status;
         Hand *hand;
-        Deck *currDeck;
+
     public:
         friend class Game;
         Person(string name){this->name=name;};
@@ -15,7 +15,6 @@ class Person{
         //Getters
         string getName(){return name;};
         string getStatus(){return status;};
-        void setCurrDeck(Deck *deck){currDeck = deck;};
         //Makes class abstract
         virtual void printInfo()=0;
 };
