@@ -1,18 +1,10 @@
-/* 
- * File:   main.cpp
- * Author: Dr. Mark E. Lehr
- * Purpose:  Array Structure Specification
- */
-
 #ifndef HAND_H
 #define HAND_H
-#include <string>
-using namespace std;
-#include "card.h"
-#include "deck.h"
 
+#include "deck.h"
+//Constant
 const int MAXHANDSIZE = 21;
-class Player;
+
 class Hand{
     private:
         int value, numCards;
@@ -28,7 +20,6 @@ class Hand{
         void printHand();
         void hit();
         void checkBusted();
-        void checkBusted(Player *player);
         void printFirstCard();
         int getNumCards(){return numCards;};
         int getHandValue(){return value;};
@@ -39,20 +30,8 @@ class Hand{
             curDeck = deck;
         }
         bool getBusted(){return busted;};
-        //Operator Overload
 
-        //Adds the card val to the hand val
-        Hand& operator+=(Card& c){
-            addCardVal(c.getValue());
-            return *this;
-        }
-        //Subtracts the card val from the hand val
-        Hand& operator-=(Card& c){
-            value-= c.getValue();
-            return *this;
-        }
-        //These Overloaded Operators make splitting slightly more clean however does add a level of compleexity due to += meaning something diffrent
-
+        //Overloaded operators 
         //Increments the Hand Size
         Hand& operator++(){
             ++numCards;

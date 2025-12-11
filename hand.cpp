@@ -1,9 +1,8 @@
 #include <iostream>
-
 using namespace std;
 
-
 #include "player.h"
+//Constructor
 Hand::Hand(){
     curDeck = nullptr;
     cards = new Card*[MAXHANDSIZE];
@@ -16,6 +15,7 @@ Hand::Hand(){
     busted = false;
     dynamicAce = false;
 }
+//Clears the hand of cards 
 void Hand::clearHand(){
     for(int i=0;i<numCards;i++){
         cards[i]=nullptr;
@@ -25,6 +25,7 @@ void Hand::clearHand(){
     busted = false;
     dynamicAce = false;
 }  
+
 void Hand::addCardVal(int cardVal) {
     if (cardVal == 11) {
         if (value + 11 > 21) {
@@ -44,16 +45,11 @@ void Hand::addCardVal(int cardVal) {
     ++numCards;
     checkBusted();
 }
+//Checks to make sure that busted flag is set if the value is above 21
 void Hand::checkBusted(){
     if(value>21){
-        
         busted = true;
     }
-}
-void Hand::checkBusted(Player *player){
-    if(value>21){
-        busted = true;
-    }   
 }
 
 //Prints the first cards of the Hand and its value as the total
@@ -69,7 +65,11 @@ void Hand::printHand(){
         cout<<cards[i]->getSymbol()<<" ";
     }
     cout<<endl;
-    cout<<"Total: "<<value<<endl;
+    cout<<"Total: "<<value;
+    if(busted){
+        cout<<" Busted. ";
+    }
+    cout<<endl;
 }
 void Hand::hit(){
     Card *card = curDeck->removeCardFromDeck();

@@ -1,0 +1,3 @@
+
+Player: asd
+Rounds: {Dealer: Logan, Payout: 34} , {Dealer: Logan| Payout: 0} , {Dealer: Logan| Payout: 354} 

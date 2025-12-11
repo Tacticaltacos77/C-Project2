@@ -13,10 +13,9 @@ using namespace std;
 class Round{
     private:
         string playerName, dealerName;
-        int playerId, dealerID;
         float payOut;
     public:
-        Round(Player *player, Dealer *dealer){};
+        Round(Player *player, Dealer *dealer);
         string getDealerName(){return dealerName;};
         double getPayOut(){return payOut;};
 };

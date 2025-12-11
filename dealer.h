@@ -16,11 +16,10 @@ class Dealer : public Person{
     public:
         friend class Game;
         Dealer(int standVal, string name);
+        ~Dealer();
         void playTurn();
         void printInfo();
-        void printHiddenHand();
-        void resetDealerVars();
-        
+        void resetDealerVars();     
 };
 
 #endif /* DEALER_H */

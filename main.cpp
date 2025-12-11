@@ -2,8 +2,8 @@
 
 using namespace std;
 
-
 #include "game.h"
+
 //Execution begins here
 int main(){
     //Maybe add player selection later or load create player or something
@@ -26,9 +26,11 @@ int main(){
     }while(!accInp);
     string cont = "Yes";
     Game game = Game(player);
-    if(cont == "Yes"||cont=="yes"){
+    do{
         game.startGame();
-    }
+        cout<<"Do you want to play again?"<<endl;
+        cin >> cont;
+    }while(cont=="Yes"||cont=="yes");
    
     return 0;
 }

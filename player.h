@@ -24,7 +24,7 @@ class Player : public Person{
     public:
         friend class Game;
         Player(string name);
-        ~Player(){delete splitHand; splitHand = nullptr; delete hand; hand = nullptr;}
+        ~Player();
         class InvalidBalance{};
         void printInfo(){};
         bool placeBet();
