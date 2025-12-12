@@ -1,7 +1,6 @@
 /* 
- * File:   main.cpp
- * Author: Dr. Mark E. Lehr
- * Purpose:  To allow for documentation of individual rounds of a game mode. Also allows for use to reuse when we add diffrent game modes like roulette
+ * File:   round.h
+ * Author: James Fregeau
  */
 
 #ifndef ROUND_H

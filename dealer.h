@@ -1,7 +1,7 @@
 /* 
- * File:   main.cpp
- * Author: Dr. Mark E. Lehr
- * Purpose:  Array Structure Specification
+ * File:   dealer.h
+ * Author: Games Fregeau
+ * Purpose:  Dealer header file
  */
 
 #ifndef DEALER_H
@@ -20,6 +20,7 @@ class Dealer : public Person{
         void playTurn();
         void printInfo();
         void resetDealerVars();     
+        void introduce();
 };
 
 #endif /* DEALER_H */

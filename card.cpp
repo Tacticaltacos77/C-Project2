@@ -1,8 +1,8 @@
 /*
  * File:   card.cpp
  * Author: James Fregeau
- * Created on November 7th, 2025, 12:30 AM
- * Created blackjack
+ * Created on December 11th, 2025, 3:59PM
+ * The actual card container obj 
  */
 
 #include <string>
@@ -15,6 +15,7 @@ Card::Card(string name,string symbol, int val){
     this->name= name;
     value = val;
 }
+
 //Copy Constructor so that deck is easier to cleanup
 Card::Card(const Card& og){
     this->name = og.name;

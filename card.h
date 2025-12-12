@@ -1,7 +1,7 @@
 /* 
- * File:   main.cpp
- * Author: Dr. Mark E. Lehr
- * Purpose:  Array Structure Specification
+ * File:   card.h
+ * Author: James Fregeau
+ * Purpose:  Card header
  */
 
 #ifndef CARD_H

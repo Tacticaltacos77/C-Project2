@@ -1,7 +1,7 @@
 /*
  * File:   saveToFile.cpp
  * Author: James Fregeau
- * Created on November 7th, 2025, 12:30 AM
+ * Created on December 11th, 2025, 4:21 PM
  * To save the games to a file for trackability 
  */
 #include <iostream>
@@ -13,13 +13,15 @@ using namespace std;
 #include "saveToFile.h"
 //Saves the Player, and dealer to file. Also stores the round that was played and how much the player won/ lost
 void SaveToFile :: save(const string &file, Player *player, Round round){
-    
     vector<string> data;
+    //Player exists boolean
     bool found =false;
     string line, srch;
     ifstream f(file);
-    streampos pos;
+    //Player to serach if exists
     srch = "Player: "+player->getName();
+
+    //Need to store the file in a vector for if we need to append the round to an existing player 
     while(getline(f, line)){
         //Overwrites the data of Round if the player already exists
         if(line == srch){
@@ -35,7 +37,7 @@ void SaveToFile :: save(const string &file, Player *player, Round round){
     }
     f.clear();
     f.close();
-    //If it isnt found at it to the end
+    //if player exists
     if(found){
         //Wipes file and rewrites it with the new data appended to that player
         ofstream f(file, ios::trunc);
@@ -43,6 +45,7 @@ void SaveToFile :: save(const string &file, Player *player, Round round){
             cout<<data[i]<<endl;
             f <<data[i]<<"\n";
         }
+    //If player doesnt exist
     }else{
         //Opens the file and just appends it to the end of the file
         ofstream f(file, ios::app);

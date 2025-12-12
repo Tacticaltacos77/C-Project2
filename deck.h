@@ -1,7 +1,7 @@
 /* 
- * File:   main.cpp
- * Author: Dr. Mark E. Lehr
- * Purpose:  Array Structure Specification
+ * File:   deck.h
+ * Author: James Fregeau
+ * 
  */
 
 #ifndef DECK_H

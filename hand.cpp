@@ -26,6 +26,7 @@ void Hand::clearHand(){
     dynamicAce = false;
 }  
 
+//Actually adds the the card value to the hand. Includes ace logic and busted logic
 void Hand::addCardVal(int cardVal) {
     if (cardVal == 11) {
         if (value + 11 > 21) {
@@ -71,6 +72,7 @@ void Hand::printHand(){
     }
     cout<<endl;
 }
+//Adds the card to the hand and adds it to the handvalue 
 void Hand::hit(){
     Card *card = curDeck->removeCardFromDeck();
     cards[numCards] = card;

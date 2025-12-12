@@ -1,6 +1,6 @@
 /* 
- * File:   main.cpp
- * Author: Dr. Mark E. Lehr
+ * File:   saveToFile.h
+ * Author: James Fregeau
  * Purpose:  To allow for documentation of individual rounds of a game mode. Also allows for use to reuse when we add diffrent game modes like roulette
  */
 #ifndef SAVETOFILE_H

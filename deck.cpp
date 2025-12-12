@@ -1,21 +1,24 @@
 /*
  * File:   deck.cpp
  * Author: James Fregeau
- * Created on November 7th, 2025, 12:30 AM
- * Created blackjack
+ * Created on November 11th, 2025, 4:01 PM
+ * Holds the cards of the playable deck
  */
 
 #include "deck.h"
 
 //Constructor
 Deck::Deck(){
+    //Sets the current amount of actual crads that havent been used
     currSize = 0;
+    //actually creates the deck containar 
     deck = new Card *[FULLDECKSIZE];
-    
+    //Fills it and shuffles
     filldeck();
     //Second shuffle for more randomness. Prob not necassary
     shuffleDeck();
 }
+
 //Deconstructor that deletes the whole deck and its items in it
 Deck::~Deck(){
     emptyDeck();
@@ -23,6 +26,7 @@ Deck::~Deck(){
 
 //Deletes all the cards in the deck
 void Deck::emptyDeck(){
+    //Goes through the deck and deletes the obj 
     for(int i=0;i<UNIQUECARDS;i++){
         delete deck[i];
         deck[i]=nullptr;
@@ -50,6 +54,7 @@ void Deck::filldeck(){
         QUEEN,
         KING
     };
+
     //ptr of ptrs of all the potential cards
     Card **cards = new Card*[UNIQUECARDS];
     int cardVal = 0;
@@ -114,11 +119,13 @@ void Deck::shuffleDeck(){
     for(int i=0; i<FULLDECKSIZE;i++){
         //Generates a random num then %s it to get it in range of the index for the deck
         ran = rand() % FULLDECKSIZE;
+        //Swaps
         temp = deck[ran];
         deck[ran] = deck[i];
         deck[i] = temp;
     }
 }
+
 //Remove a card from the top of the deck and returns it
 Card * Deck::removeCardFromDeck(){
     //if deck is empty refill it and shuffle

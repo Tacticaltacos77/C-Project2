@@ -2,7 +2,6 @@
 #define PERSON_H
 #include <string>
 #include "hand.h"
-
 using namespace std;
 //Abstract Class for dealer and player
 class Person{

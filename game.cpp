@@ -1,8 +1,8 @@
 /*
  * File:   game.cpp
  * Author: James Fregeau
- * Created on November 7th, 2025, 12:30 AM
- * Created blackjack
+ * Created December 11th, 2025, 4:24 PM
+ * Actaul game logic class
  */
 
 //Libraries
@@ -24,15 +24,15 @@ using namespace std;
 const string fileName = "out.txt";
 //Value the dealer will hit until it hand value is greater
 const int DEALERSTANDVAL = 17; 
-//3 is for Nat21
-const int NORMAL = time(0);
-const int TESTSPLIT = 1;
-const int TESTDYNAMICACE= 8;
+//Seeds
+const int NORMAL = time(0);//Random
+const int TESTSPLIT = 14; //Starts can split
+const int TESTBLACKJACK= 17; //Starts with blackJack. Can test the payout and ace compression
 
 //Constructor
 Game::Game(Player *player){
     //Sets the seed
-    srand(14);
+    srand(NORMAL);
     //Store player in the game object for easy access
     this->player = player;
     
@@ -41,7 +41,7 @@ Game::Game(Player *player){
     
     //Can add a load dealer later to have multiple dealers
     dealer = new Dealer(DEALERSTANDVAL, "Logan");
-    
+    dealer->introduce();
     //Aggregation, deck can exist without the same player or dealer. This is for multiplier if added.
     //Sets the current deck for each hand for easy access 
     player->hand->setCurrDeck(deck);
@@ -64,7 +64,6 @@ bool Game::startGame(){
     return true;
 }
 
-
 //A group function
 void Game :: gameLoop(){
     //Dish out cards+
@@ -74,8 +73,10 @@ void Game :: gameLoop(){
         dealerTurn();
     }
     payOut();
+    //Saves the round and prints it to file
     Round rnd = Round(player, dealer);
     SaveToFile::save(fileName, player, rnd);
+    //Resets vars for next game 
     resetAllGameVars();
 }
 
@@ -137,6 +138,7 @@ void Game :: playerTurn(){
                 player->canDouble = false;
                 player->canSplit = false;
                 player->nat21 = false;
+
                 //Makes sure the right hand is hit if the player has split
                 if(player->currHand==1) player->hand->hit();
                 else player->splitHand->hit();
@@ -151,19 +153,22 @@ void Game :: playerTurn(){
     }while(!player->endRound);
 }
 
-//Handles all the dealers turn logic and loop
+//Handles all the dealers turn logic and loop if player hasn't lost
 void Game :: dealerTurn(){ 
+    //Holds players best hand val that is still playable
     int bestPlrHandVal;
     dealer->hidden =false;
     if(player->nat21){
         bestPlrHandVal = 21;
     }else if(player->hasSplit){
+        //Compares the split hands and assigns the best one
         if(player->hand->getHandValue()>player->splitHand->getHandValue() && player->hand->getBusted()==false){
             bestPlrHandVal = player->hand->getHandValue();
         }else{
             bestPlrHandVal = player->splitHand->getHandValue();
         }
     }else{
+        //Regualr assignment
         bestPlrHandVal = player->hand->getHandValue();
     }
     //Dealer plays until over the stand val or if the players value is higher than dealers
@@ -173,6 +178,7 @@ void Game :: dealerTurn(){
         dealer->hand->checkBusted();
         printHands();
     }
+    //Logic for player winnings/lossings
     if(bestPlrHandVal==dealer->hand->getHandValue())player->push =true;
     else if(dealer->hand->getBusted()) player->hasLost = false;
     else if(bestPlrHandVal <dealer->hand->getHandValue())player->hasLost =true;
@@ -183,12 +189,14 @@ void Game :: dealerTurn(){
 void Game :: printHands(){
     cout <<"=================================="<< endl;
     cout <<"Dealer's Hand:"<<endl;
+    //If the dealers turn hasnt started
     if(dealer->hidden){
         dealer->hand->printFirstCard();
     }else{
         dealer->hand->printHand();
     }
     cout <<"----------------------------------"<< endl;
+    //Prints players hands for split and regular
     if(player->hasSplit){
         cout<<"Player's hands"<<endl;
         player->printSplitHand();
@@ -208,22 +216,28 @@ void Game :: resetAllGameVars(){
 //Decides amount to pay player based on if they won or lost or got a blackjack
 void Game :: payOut(){
     float multi, temp;
-
+    ++player->sTotal;
+    //Assigns the correct multi for payout
     if(player->push){
-        cout<<"Push. Your money is returned. Total returned: $"<<player->bet<<endl<<"Balance: $"<<player->balance<<endl;
+        cout<<"Push. Your money is returned. Total returned: $"<<player->bet<<endl;
+        cout<<"Balance: $"<<player->balance<<endl;
         return;
     }else if(!player->hasLost){
         if(player->nat21){
             multi = 1.5;
+            ++player->sBlackJacks;
         }else multi =1;
+        ++player->sWins;
         temp = player->bet;
         cout<<"Congratulations YOU WON! Total Winnings: $";
     }else{
+        ++player->sLoses;
         multi =-1;
         cout<<"You lose. Losings: $";
         temp = 0;
     }
     player->payOut+= player->bet * multi;
+    //actually adds/subtracts payout.
     if(!player->push)player->balance+=player->payOut;
     
     cout<<player->payOut+temp<<endl<<"Balance: $"<<player->balance<<endl;
@@ -235,6 +249,8 @@ void Game :: starterCards(){
     player->hand->hit();
     dealer->hand->hit();
     dealer->hand->hit();
+    //Sets the flag for incresed payout if player hit blackjack
+    if(player->hand->getHandValue()==21)player->nat21 =true;
 }
 
 //Sets game flags for currhand and has lost

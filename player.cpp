@@ -26,6 +26,10 @@ Player::Player(string name):Person(name){
     //For the second hand if player splits
     splitHand = new Hand();
     resetPlayerVars();
+    sWins =0;
+    sLoses =0;
+    sTotal =0;
+    sBlackJacks = 0;
 }
 
 Player :: ~Player(){
@@ -98,6 +102,8 @@ void Player::split(){
     splitHand->setHandVal(hand->getCard(1)->getValue());
     hand->setHandVal(hand->getCard(0)->getValue());
     hand->setCard(1,nullptr);
+    //Changes hand sizes
+    //Need to derefrence to use 
     --*hand;
     ++*splitHand;
 }
@@ -107,8 +113,10 @@ void Player::hitDouble(){
     hand->hit();
     hand->checkBusted();
 }
+
 //Player stand logic
 void Player :: stand(){
+    //Swaps hands if on first hand and split otherwise end round
     if(hasSplit ==true && currHand==1){
         currHand =2;
     }else endRound = true;
@@ -129,4 +137,12 @@ void Player :: resetPlayerVars(){
     payOut = 0;
     currHand =1;
 }
-
+//Prints seesion stats
+void Player :: printSessionStats(){
+    cout<<"Thanks for playing!"<<endl;
+    cout<<"Session stats: "<<endl;
+    cout<<"Total Rounds: "<<sTotal<<endl;
+    cout<<"Total Wins: "<<sWins<<endl;
+    cout<<"Total Loses: "<<sLoses<<endl;
+    cout<<"Total BlackJacks: "<<sBlackJacks<<endl;
+}

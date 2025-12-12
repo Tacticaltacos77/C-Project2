@@ -1,7 +1,7 @@
 /* 
- * File:   main.cpp
- * Author: Dr. Mark E. Lehr
- * Purpose:  Array Structure Specification
+ * File:   player.h
+ * Author: James Fregeau
+ * Purpose:  To store player vars and funcs
  */
 
 #ifndef PLAYER_H
@@ -17,7 +17,7 @@ const int NAMEBUFFER = 20;
 class Player : public Person{
     private:
         float balance, startBalance, payOut;
-        int bet, currHand;
+        int bet, currHand,sWins, sLoses,sTotal, sBlackJacks;
         bool hasHit, canSplit, canDouble, hasSplit, hasDouble, nat21, hasLost, endRound, push;
         Hand  *splitHand;
         
@@ -37,6 +37,7 @@ class Player : public Person{
         bool hasSplt(){return hasSplit;};
         void setLost(bool lost){hasLost = lost;};
         Hand *getHand(int i){if(i==1)return hand;else return splitHand;};
+        void printSessionStats();
 };
 
 #endif /* PLAYER_H */
